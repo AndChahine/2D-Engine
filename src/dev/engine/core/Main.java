@@ -17,21 +17,61 @@
 package dev.engine.core;
 
 import dev.engine.graphics.Display;
-import dev.engine.graphics.RenderContext;
 
 public class Main {
 
 	public static void main(String[] args) {
 		Display display = new Display(800, 600);
-		RenderContext target = display.getRenderContext();
-
+		Scene scene = new Scene();
+		
+		int frames = 0;
+		double unprocessedTime = 0.0;
+		double frameCounterTime = 0;
+		double frameTime = 1.0 / 1000.0;
+		long previousTime = System.nanoTime();
+		String fpsString = "0 ms per frame (0 fps)";
+		
+		//TODO: implement linear interpolated rendering
 		while (true) {
-			target.clearScreen(255, 0, 0, 0);
+			boolean render = false;
 			
-			target.fillCircle(200, 200, 50, 127, 255, 0, 0);
-			target.fillCircle(250, 200, 50, 127, 0, 0, 255);
-
-			display.render();
+			long currentTime = System.nanoTime();
+			long passedTime = currentTime - previousTime;
+			previousTime = currentTime;
+			
+			unprocessedTime += passedTime / 1000000000.0;
+			frameCounterTime += passedTime / 1000000000.0;
+			
+			if(frameCounterTime >= 1.0) {
+				fpsString = (1000.0 / frames) + " ms per frame (" + frames + " fps)";
+				
+				System.out.println(fpsString);
+				
+				frames = 0;
+				frameCounterTime = 0.0;
+			}
+			
+			while(unprocessedTime > frameTime) {
+				render = true;
+				
+				// update game
+				scene.update((float)frameTime);
+				
+				unprocessedTime -= frameTime;
+			}
+			
+			if(render) {
+				frames++;
+				// render game
+				scene.render(display.getRenderContext());
+				display.render();
+			}else {
+				try {
+					Thread.sleep(1);
+				}catch(InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+			}
 		}
 	}
 }

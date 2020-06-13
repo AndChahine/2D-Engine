@@ -1,13 +1,17 @@
 package dev.engine.graphics;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+
+import javax.imageio.ImageIO;
 
 public class Bitmap {
 
 	private int width;
 	private int height;
 	private int[] pixels;
-	private int zDepth;
 
 	public Bitmap(int width, int height) {
 		this(width, height, new int[width * height]);
@@ -18,6 +22,20 @@ public class Bitmap {
 		this.height = height;
 		this.pixels = pixels;
 	}
+	
+	public Bitmap(String fileName) {
+		try {
+			BufferedImage image = ImageIO.read(getClass().getResource(fileName));
+			
+			this.width = image.getWidth();
+			this.height = image.getHeight();
+			
+			this.pixels = new int[width * height];
+			image.getRGB(0, 0, width, height, pixels, 0, width);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void clearScreen(int a, int r, int g, int b) {
 		Arrays.fill(pixels, toARGB(a, r, g, b));
@@ -25,6 +43,12 @@ public class Bitmap {
 
 	//TODO: implement z-depth for sorting alpha blending
 	public void drawPixel(int x, int y, int a, int r, int g, int b) {
+		
+		// check if pixel is in bounds of bitmap
+		if(x < 0 || x >= width || y < 0 || y >= height) {
+			return;
+		}
+		
 		int index = (x + y * width);
 		int argb;
 		
@@ -68,8 +92,40 @@ public class Bitmap {
 		
 		pixels[index] = argb;
 	}
+	
+	// does nearest filtering when drawing bitmap with render context
+	public void copyNearest(Bitmap dest, int destX, int destY, float srcXFloat, float srcYFloat) {
+		int srcX = (int)(srcXFloat * (getWidth() - 1));
+		int srcY = (int)(srcYFloat * (getHeight() - 1));
+		
+		int srcIndex = (srcX + srcY * getWidth());
+		
+		// check if pixel is in bounds
+		if(srcX < 0 || srcX >= width || srcY < 0 || srcY >= height) {
+			return;
+		}
+		
+		int a = (this.pixels[srcIndex] >> 24) & 0xFF;
+		int r = (this.pixels[srcIndex] >> 16) & 0xFF;
+		int g = (this.pixels[srcIndex] >> 8) & 0xFF;
+		int b = (this.pixels[srcIndex] >> 0) & 0xFF;
+		
+		dest.drawPixel(destX, destY, a, r, g, b);
+	}
 
-	protected int toARGB(int a, int r, int g, int b) {
+	public int toARGB(int a, int r, int g, int b) {
 		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+	
+	public int[] getPixels() {
+		return pixels;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 }
