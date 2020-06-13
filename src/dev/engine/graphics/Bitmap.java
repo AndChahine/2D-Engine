@@ -7,6 +7,7 @@ public class Bitmap {
 	private int width;
 	private int height;
 	private int[] pixels;
+	private int zDepth;
 
 	public Bitmap(int width, int height) {
 		this(width, height, new int[width * height]);
