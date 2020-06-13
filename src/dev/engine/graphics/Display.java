@@ -32,7 +32,7 @@ public class Display {
 		pixels = ((DataBufferInt) screenBuffer.getRaster().getDataBuffer()).getData();
 		target = new RenderContext(width, height, pixels);
 
-		frame = new JFrame("Bitmap Testing");
+		frame = new JFrame("2D Engine");
 		frame.setSize(width, height);
 		frame.setResizable(false);
 		frame.add(canvas);

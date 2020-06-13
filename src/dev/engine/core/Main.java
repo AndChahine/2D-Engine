@@ -27,6 +27,9 @@ public class Main {
 
 		while (true) {
 			target.clearScreen(255, 0, 0, 0);
+			
+			target.fillCircle(200, 200, 50, 127, 255, 0, 0);
+			target.fillCircle(250, 200, 50, 127, 0, 0, 255);
 
 			display.render();
 		}

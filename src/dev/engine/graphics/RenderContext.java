@@ -34,7 +34,7 @@ public class RenderContext extends Bitmap {
 		}
 	}
 	
-	public void drawCircle(int x, int y, int radius, int a, int r, int b, int g) {
+	public void drawCircle(int x, int y, int radius, int a, int r, int g, int b) {
 		double i, angle, x1, y1;
 		
 		for(i = 0; i < 360; i += 0.1) {
@@ -46,11 +46,11 @@ public class RenderContext extends Bitmap {
 		}
 	}
 	
-	public void fillCircle(int x, int y, int radius, int a, int r, int b, int g) {		
-		for(int i = -radius; i < radius; i++) {
-			int height = (int)Math.sqrt(radius * radius - i * i);
+	public void fillCircle(int x, int y, int radius, int a, int r, int g, int b) {		
+		for(int j = -radius; j < radius; j++) {
+			int height = (int)Math.sqrt(radius * radius - j * j);
 			
-			for(int j = -height; j < height; j++) {
+			for(int i = -height; i < height; i++) {
 				drawPixel(i + x, j + y, a, r, g, b);
 			}
 		}
