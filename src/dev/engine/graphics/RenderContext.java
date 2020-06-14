@@ -1,6 +1,6 @@
 package dev.engine.graphics;
 
-import dev.engine.util.Util;
+import dev.engine.util.Utils;
 
 public class RenderContext extends Bitmap {
 
@@ -11,8 +11,8 @@ public class RenderContext extends Bitmap {
 	public void drawImage(Bitmap bitmap, float xStart, float yStart, float xEnd, float yEnd) {
 		float aspect = (float)getWidth() / (float)getHeight();
 		
-		xStart /= aspect;
-		xEnd /= aspect;
+		float scaledXStart = xStart / aspect;
+		float scaledXEnd = xEnd / aspect;
 		
 		float halfWidth = getWidth() / 2.0f;
 		float halfHeight = getHeight() / 2.0f;
@@ -20,15 +20,15 @@ public class RenderContext extends Bitmap {
 		float imageXStart = 0.0f;
 		float imageYStart = 0.0f;
 		float imageYStep = 1.0f / (((yEnd * halfHeight) + halfHeight) - ((yStart * halfHeight) + halfHeight));
-		float imageXStep = 1.0f / (((xEnd * halfWidth) + halfWidth) - ((xStart * halfWidth) + halfWidth));
+		float imageXStep = 1.0f / (((scaledXEnd * halfWidth) + halfWidth) - ((scaledXStart * halfWidth) + halfWidth));
 		
 		if(xStart < -1.0f) {
-			imageXStart = -((xStart + 1.0f) / (xEnd - xStart));
-			xStart = -1.0f;
+			imageXStart = -((scaledXStart + 1.0f) / (scaledXEnd - scaledXStart));
+			scaledXStart = -1.0f;
 		}
 		if(xStart > 1.0f) {
-			imageXStart = -((xStart + 1.0f) / (xEnd - xStart));
-			xStart = 1.0f;
+			imageXStart = -((scaledXStart + 1.0f) / (scaledXEnd - scaledXStart));
+			scaledXStart = 1.0f;
 		}
 		if(yStart < -1.0f) {
 			imageYStart = -((yStart + 1.0f) / (yEnd - yStart));
@@ -39,18 +39,18 @@ public class RenderContext extends Bitmap {
 			yStart = 1.0f;
 		}
 		
-		xEnd = Util.clamp(xEnd, -1.0f, 1.0f);
-		yEnd = Util.clamp(yEnd, -1.0f, 1.0f);
+		scaledXEnd = Utils.clamp(scaledXEnd, -1.0f, 1.0f);
+		yEnd = Utils.clamp(yEnd, -1.0f, 1.0f);
 		
-		xStart = (xStart * halfWidth) + halfWidth;
+		scaledXStart = (scaledXStart * halfWidth) + halfWidth;
 		yStart = (yStart * halfHeight) + halfHeight;
-		xEnd = (xEnd * halfWidth) + halfWidth;
+		scaledXEnd = (scaledXEnd * halfWidth) + halfWidth;
 		yEnd = (yEnd * halfHeight) + halfHeight;
 		
 		float srcY = imageYStart;
 		for(int j = (int) yStart; j < yEnd; j++) {
 			float srcX = imageXStart;
-			for(int i = (int) xStart; i < xEnd; i++) {
+			for(int i = (int) scaledXStart; i < scaledXEnd; i++) {
 				bitmap.copyNearest(this, i, j, srcX, srcY);
 				srcX += imageXStep;
 			}
@@ -87,7 +87,10 @@ public class RenderContext extends Bitmap {
 	}
 	
 	public void drawCircle(int xCenter, int yCenter, int radius, int a, int r, int g, int b) {
-		double i, angle, x1, y1;
+		double i;
+		double angle; 
+		double x1; 
+		double y1;
 		
 		for(i = 0; i < 360; i += 0.1) {
 			angle = i;

@@ -11,28 +11,25 @@ import javax.swing.JFrame;
 
 public class Display {
 
-	private JFrame frame;
-	private Canvas canvas;
 	private BufferStrategy bs;
 	private Graphics g;
 
 	private BufferedImage screenBuffer;
 	private RenderContext target;
-	private int[] pixels;
 
 	public Display(int width, int height) {
 
 		Dimension size = new Dimension(width, height);
-		canvas = new Canvas();
+		Canvas canvas = new Canvas();
 		canvas.setPreferredSize(size);
 		canvas.setMinimumSize(size);
 		canvas.setMaximumSize(size);
 
 		screenBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		pixels = ((DataBufferInt) screenBuffer.getRaster().getDataBuffer()).getData();
+		int[] pixels = ((DataBufferInt) screenBuffer.getRaster().getDataBuffer()).getData();
 		target = new RenderContext(width, height, pixels);
 
-		frame = new JFrame("2D Engine");
+		JFrame frame = new JFrame("2D Engine");
 		frame.setSize(width, height);
 		frame.setResizable(false);
 		frame.add(canvas);
