@@ -34,7 +34,7 @@ public class RenderContext extends Bitmap {
 				float newG = ((light >> 8) & 0xFF) / 255.0f;
 				float newB = ((light >> 0) & 0xFF) / 255.0f;
 				
-				// combining light source color with unlit pixel color using mulitplicative blending
+				// combining light source color with unlit pixel color using multiplicative blending
 				int r1 = (int) ((oldR * newR) * 255);
 				int g1 = (int) ((oldG * newG) * 255);
 				int b1 = (int) ((oldB * newB) * 255);
