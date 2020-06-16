@@ -15,9 +15,10 @@ public class MathUtils {
 	}
 	
 	public static float distance(float x1, float y1, float x2, float y2) {
-		float ac = Math.abs(y2 - y1);
-		float cb = Math.abs(x2 - x1);
-		
-		return (float) Math.hypot(ac, cb);
+		return (float) Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
+	}
+	
+	public static float saturate(float val) {
+		return clamp(val, 0.0f, 1.0f);
 	}
 }
