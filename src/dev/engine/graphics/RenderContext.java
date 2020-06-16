@@ -1,13 +1,12 @@
 package dev.engine.graphics;
 
+import dev.engine.spatial.AABB;
 import dev.engine.util.MathUtils;
 
 public class RenderContext extends Bitmap {
 	
 	//TODO: put drawing functions from here to bitmap
 	//      to make drawing primitives to bitmaps easier
-	
-	//TODO: abstract lighting
 	
 	//TODO: convert using coordinates to normalized coordinates
 	
@@ -106,8 +105,8 @@ public class RenderContext extends Bitmap {
 		
 		float scaledXStart = xStart / aspect;
 		float scaledXEnd = xEnd / aspect;
-		float scaledYStart = yStart / aspect;
-		float scaledYEnd = yEnd / aspect;
+		float scaledYStart = yStart / 1;
+		float scaledYEnd = yEnd / 1;
 		
 		float halfWidth = getWidth() / 2.0f;
 		float halfHeight = getHeight() / 2.0f;
@@ -204,5 +203,11 @@ public class RenderContext extends Bitmap {
 				}
 			}
 		}
+	}
+	
+	public AABB getRenderArea() {
+		float aspect = getAspect();
+//		return new AABB(-aspect + cameraX, -1 + cameraY, aspect + cameraX, 1 + cameraY);
+		return new AABB(-aspect + 0, -1 + 0, aspect + 0, 1 + 0);
 	}
 }

@@ -27,7 +27,7 @@ public class Main {
 		int frames = 0;
 		double unprocessedTime = 0.0;
 		double frameCounterTime = 0;
-		double frameTime = 1.0 / 120.0;
+		double frameTime = 1.0 / 1000.0;
 		long previousTime = System.nanoTime();
 		String fpsString = "0 ms per frame (0 fps)";
 		
@@ -55,7 +55,7 @@ public class Main {
 				render = true;
 				
 				// update game
-				scene.update((float)frameTime);
+				scene.update(display.getInput(), (float)frameTime);
 				
 				unprocessedTime -= frameTime;
 			}

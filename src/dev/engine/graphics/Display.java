@@ -9,6 +9,8 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
+import dev.engine.core.Input;
+
 public class Display {
 
 	private BufferStrategy bs;
@@ -16,6 +18,8 @@ public class Display {
 
 	private BufferedImage screenBuffer;
 	private RenderContext target;
+	
+	private Input input;
 
 	public Display(int width, int height) {
 
@@ -24,6 +28,12 @@ public class Display {
 		canvas.setPreferredSize(size);
 		canvas.setMinimumSize(size);
 		canvas.setMaximumSize(size);
+		
+		input = new Input();
+		canvas.addKeyListener(input);
+		canvas.addMouseListener(input);
+		canvas.addMouseMotionListener(input);
+		canvas.addMouseWheelListener(input);
 
 		screenBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		int[] pixels = ((DataBufferInt) screenBuffer.getRaster().getDataBuffer()).getData();
@@ -50,5 +60,9 @@ public class Display {
 
 	public RenderContext getRenderContext() {
 		return target;
+	}
+	
+	public Input getInput() {
+		return input;
 	}
 }

@@ -29,8 +29,6 @@ public class LightMap extends Bitmap{
 				float lightB = (float) light.getB();
 				
 				float dist = MathUtils.distance(i + light.getX(), j + light.getY(), light.getX(), light.getY());
-//				float intensity = Light.DEFAULT_INTENSITY;
-//				float brightness = intensity / (dist * dist);
 				
 				float brightness = Math.max((1.0f / (dist * dist)) - light.getInvRadiusSqr(), 0.0f);
 				
