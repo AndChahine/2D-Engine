@@ -5,6 +5,8 @@ import dev.engine.util.MathUtils;
 
 public class RenderContext extends Bitmap {
 	
+	//TODO: need to port to using java2D since per pixel calculations are too expensive
+	
 	//TODO: put drawing functions from here to bitmap
 	//      to make drawing primitives to bitmaps easier
 	

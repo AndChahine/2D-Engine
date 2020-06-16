@@ -19,7 +19,7 @@ public class Scene {
 	public Scene() {
 		tree = new QuadTree(new AABB(-2, -2, 2, 2), 8);
 		
-		tree.add(new Entity(-0.5f, -0.5f, 0.5f, 0.5f).addComponent(new SpriteComponent(new Bitmap("/knight.png"), 0.0f)));
+		tree.add(new Entity(-0.5f, -0.5f, 0.5f, 0.5f).addComponent(new SpriteComponent(new Bitmap("/test.png"), 0.0f)));
 	}
 	
 	public void update(Input input, float delta) {
